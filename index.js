@@ -46,6 +46,7 @@ process.stdin.on("data", function(data){
             if(!consulta){
                 console.log("Digite o nome do paciente da consulta que deseja atualizar:");
                 consulta = {};
+                nome = undefined;
             } else if(!nome){
                 nome = entrada;
                 for(let c=0; c<consultas.length; c++){
@@ -75,6 +76,7 @@ process.stdin.on("data", function(data){
                             console.log("Nome do paciente alterado com sucesso.");
                             opcao = undefined;
                             consulta = undefined;
+                            resp = undefined;
                         }
                         break;
                     case 2:
@@ -86,6 +88,7 @@ process.stdin.on("data", function(data){
                             console.log("Nome do médico alterado com sucesso.");
                             opcao = undefined;
                             consulta = undefined;
+                            resp = undefined;
                         }
                         break;
                     case 3:
@@ -97,6 +100,7 @@ process.stdin.on("data", function(data){
                             console.log("Data alterada com sucesso.");
                             opcao = undefined;
                             consulta = undefined;
+                            resp = undefined;
                         }
                         break;
                     case 4:
@@ -108,16 +112,19 @@ process.stdin.on("data", function(data){
                             console.log("Horário alterado com sucesso.");
                             opcao = undefined;
                             consulta = undefined;
+                            resp = undefined;
                         }
                         break;
                     default:
                         console.log("Opção inválida.");
                         opcao = undefined;
                         consulta = undefined;
+                        resp = undefined;
                 }
             }
             break;
         case 4:
+            nome = undefined;
             if(!consulta){
                 console.log("Digite o nome do paciente da consulta que deseja excluir:");
                 consulta = {};
@@ -130,6 +137,8 @@ process.stdin.on("data", function(data){
                         break;
                     }
                 }
+                opcao = undefined;
+                consulta = undefined
             }
             break;
         case 5:
