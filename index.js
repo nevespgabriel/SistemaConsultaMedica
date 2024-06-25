@@ -1,5 +1,5 @@
 let opcao, entrada, consulta, nome, resp;
-const consultas = [];
+let consultas = [];
 
 console.log("Digite o que deseja fazer\n[1] Adicionar consulta\n[2] Listar consultas");
 console.log("[3] Atualizar consulta existente\n[4] Cancelar consulta\n[5] Sair");
@@ -47,11 +47,11 @@ process.stdin.on("data", function(data){
                 console.log("Digite o nome do paciente da consulta que deseja atualizar:");
                 consulta = {};
                 nome = undefined;
-            } else if(!nome){
+            } else if(!nome && nome != 0){
                 nome = entrada;
                 for(let c=0; c<consultas.length; c++){
                     if(nome == consultas[c].nomePaciente){
-                        nome = c;
+                        nome = Number(c);
                         console.log("Digite o que deseja alterar:\n[1] Nome do Paciente");
                         console.log("[2] Nome do Médico\n[3] Data\n[4] Horário");
                         break;
