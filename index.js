@@ -1,4 +1,4 @@
-let opcao, entrada, consulta, nome;
+let opcao, entrada, consulta, nome, resp;
 const consultas = [];
 
 console.log("Digite o que deseja fazer\n[1] Adicionar consulta\n[2] Listar consultas");
@@ -49,18 +49,76 @@ process.stdin.on("data", function(data){
             } else if(!nome){
                 nome = entrada;
                 for(let c=0; c<consultas.length; c++){
-                    if(nome == consultas[c].nome){
+                    if(nome == consultas[c].nomePaciente){
                         nome = c;
                         console.log("Digite o que deseja alterar:\n[1] Nome do Paciente");
-                        console.log("[2] Nome do Médico");
+                        console.log("[2] Nome do Médico\n[3] Data\n[4] Horário");
                         break;
                     }
                 }
+                if(isNaN(nome)){
+                    console.log("Não foi possível encontrar nenhum paciente com esse nome.");
+                    opcao = undefined;
+                    consulta = undefined;
+                }
             } else{
-
+                if(!resp){
+                    resp = Number(entrada);
+                }
+                switch(resp){
+                    case 1:
+                        if(consultas[nome].nomePaciente){
+                            console.log("Digite o novo nome do paciente:");
+                            consultas[nome].nomePaciente = undefined;
+                        } else{
+                            consultas[nome].nomePaciente = entrada;
+                            console.log("Nome do paciente alterado com sucesso.");
+                            opcao = undefined;
+                            consulta = undefined;
+                        }
+                        break;
+                    case 2:
+                        if(consultas[nome].nomeMedico){
+                            console.log("Digite o novo nome do médico:");
+                            consultas[nome].nomeMedico = undefined;
+                        } else{
+                            consultas[nome].nomeMedico = entrada;
+                            console.log("Nome do médico alterado com sucesso.");
+                            opcao = undefined;
+                            consulta = undefined;
+                        }
+                        break;
+                    case 3:
+                        if(consultas[nome].data){
+                            console.log("Digite a nova data:");
+                            consultas[nome].data = undefined;
+                        } else{
+                            consultas[nome].data = entrada;
+                            console.log("Data alterada com sucesso.");
+                            opcao = undefined;
+                            consulta = undefined;
+                        }
+                        break;
+                    case 4:
+                        if(consultas[nome].hora){
+                            console.log("Digite o novo horário:");
+                            consultas[nome].hora = undefined;
+                        } else{
+                            consultas[nome].hora = entrada;
+                            console.log("Horário alterado com sucesso.");
+                            opcao = undefined;
+                            consulta = undefined;
+                        }
+                        break;
+                    default:
+                        console.log("Opção inválida.");
+                        opcao = undefined;
+                        consulta = undefined;
+                }
             }
             break;
         case 4:
+            
             break;
         case 5:
             console.log("Até mais!");
