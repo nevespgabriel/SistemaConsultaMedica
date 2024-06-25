@@ -118,7 +118,19 @@ process.stdin.on("data", function(data){
             }
             break;
         case 4:
-            
+            if(!consulta){
+                console.log("Digite o nome do paciente da consulta que deseja excluir:");
+                consulta = {};
+            } else if(!nome){
+                nome = entrada;
+                for(let c=0; c<consultas.length; c++){
+                    if(nome == consultas[c].nomePaciente){
+                        consultas.splice(c, 1);
+                        console.log("Consulta removida com sucesso.");
+                        break;
+                    }
+                }
+            }
             break;
         case 5:
             console.log("Até mais!");
