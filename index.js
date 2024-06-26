@@ -1,8 +1,12 @@
-let opcao, entrada, consulta, nome, resp;
+let opcao, entrada, consulta, indice, resp;
 let consultas = [];
 
-console.log("Digite o que deseja fazer\n[1] Adicionar consulta\n[2] Listar consultas");
-console.log("[3] Atualizar consulta existente\n[4] Cancelar consulta\n[5] Sair");
+console.log(`Digite o que deseja fazer
+    [1] Adicionar consulta
+    [2] Listar consultas
+    [3] Atualizar consulta existente
+    [4] Cancelar consulta
+    [5] Sair`);
 process.stdin.on("data", function(data){
     entrada = data.toString().trim();
     if(!opcao){
@@ -13,6 +17,7 @@ process.stdin.on("data", function(data){
             if(!consulta){
                 console.log("Digite o nome do paciente:");
                 consulta = {};
+                consulta.indice = consultas.length;
             } else if(!consulta.nomePaciente){
                 consulta.nomePaciente = entrada;
                 console.log("Digite o nome do médico:");
@@ -24,6 +29,7 @@ process.stdin.on("data", function(data){
                 console.log("Digite o horário da consulta:");
             } else{
                 consulta.hora = entrada;
+                consulta.removido = false;
                 consultas.push(consulta);
                 console.log("Consulta cadastrada com sucesso.");
                 opcao = undefined;
@@ -33,31 +39,30 @@ process.stdin.on("data", function(data){
         case 2:
             console.log("CONSULTAS:")
             for(let c=0; c<consultas.length;c++){
-                console.log("===================================");
-                console.log("Nome do paciente: " + consultas[c].nomePaciente);
-                console.log("Nome do médico: " + consultas[c].nomeMedico);
-                console.log("Data: " + consultas[c].data);
-                console.log("Horário: " + consultas[c].hora);
-                console.log("===================================");
+                if(!consultas[c].removido){
+                    console.log("===================================");
+                    console.log("Número da consulta: " + consultas[c].indice);
+                    console.log("Nome do paciente: " + consultas[c].nomePaciente);
+                    console.log("Nome do médico: " + consultas[c].nomeMedico);
+                    console.log("Data: " + consultas[c].data);
+                    console.log("Horário: " + consultas[c].hora);
+                    console.log("===================================");
+                }
             }
             opcao = undefined;
             break;
         case 3:
             if(!consulta){
-                console.log("Digite o nome do paciente da consulta que deseja atualizar:");
+                console.log("Digite o índice da consulta que deseja atualizar:");
                 consulta = {};
-                nome = undefined;
-            } else if(!nome && nome != 0){
-                nome = entrada;
-                for(let c=0; c<consultas.length; c++){
-                    if(nome == consultas[c].nomePaciente){
-                        nome = Number(c);
-                        console.log("Digite o que deseja alterar:\n[1] Nome do Paciente");
-                        console.log("[2] Nome do Médico\n[3] Data\n[4] Horário");
-                        break;
-                    }
-                }
-                if(isNaN(nome)){
+                indice = undefined;
+            } else if(!indice && indice != 0){
+                indice = Number(entrada);
+                if(indice >=0 && indice < consultas.length){
+                    console.log("Digite o que deseja alterar:\n[1] Nome do Paciente");
+                    console.log("[2] Nome do Médico\n[3] Data\n[4] Horário");
+                    break;
+                }else {
                     console.log("Não foi possível encontrar nenhum paciente com esse nome.");
                     opcao = undefined;
                     consulta = undefined;
@@ -68,11 +73,11 @@ process.stdin.on("data", function(data){
                 }
                 switch(resp){
                     case 1:
-                        if(consultas[nome].nomePaciente){
+                        if(consultas[indice].nomePaciente){
                             console.log("Digite o novo nome do paciente:");
-                            consultas[nome].nomePaciente = undefined;
+                            consultas[indice].nomePaciente = undefined;
                         } else{
-                            consultas[nome].nomePaciente = entrada;
+                            consultas[indice].nomePaciente = entrada;
                             console.log("Nome do paciente alterado com sucesso.");
                             opcao = undefined;
                             consulta = undefined;
@@ -80,11 +85,11 @@ process.stdin.on("data", function(data){
                         }
                         break;
                     case 2:
-                        if(consultas[nome].nomeMedico){
+                        if(consultas[indice].nomeMedico){
                             console.log("Digite o novo nome do médico:");
-                            consultas[nome].nomeMedico = undefined;
+                            consultas[indice].nomeMedico = undefined;
                         } else{
-                            consultas[nome].nomeMedico = entrada;
+                            consultas[indice].nomeMedico = entrada;
                             console.log("Nome do médico alterado com sucesso.");
                             opcao = undefined;
                             consulta = undefined;
@@ -92,11 +97,11 @@ process.stdin.on("data", function(data){
                         }
                         break;
                     case 3:
-                        if(consultas[nome].data){
+                        if(consultas[indice].data){
                             console.log("Digite a nova data:");
-                            consultas[nome].data = undefined;
+                            consultas[indice].data = undefined;
                         } else{
-                            consultas[nome].data = entrada;
+                            consultas[indice].data = entrada;
                             console.log("Data alterada com sucesso.");
                             opcao = undefined;
                             consulta = undefined;
@@ -104,11 +109,11 @@ process.stdin.on("data", function(data){
                         }
                         break;
                     case 4:
-                        if(consultas[nome].hora){
+                        if(consultas[indice].hora){
                             console.log("Digite o novo horário:");
                             consultas[nome].hora = undefined;
                         } else{
-                            consultas[nome].hora = entrada;
+                            consultas[indice].hora = entrada;
                             console.log("Horário alterado com sucesso.");
                             opcao = undefined;
                             consulta = undefined;
@@ -124,21 +129,18 @@ process.stdin.on("data", function(data){
             }
             break;
         case 4:
-            nome = undefined;
+            indice = undefined;
             if(!consulta){
-                console.log("Digite o nome do paciente da consulta que deseja excluir:");
+                console.log("Digite o indice da consulta que deseja excluir:");
                 consulta = {};
-            } else if(!nome){
-                nome = entrada;
-                for(let c=0; c<consultas.length; c++){
-                    if(nome == consultas[c].nomePaciente){
-                        consultas.splice(c, 1);
-                        console.log("Consulta removida com sucesso.");
-                        break;
-                    }
+            } else if(!indice){
+                indice = Number(entrada);
+                if(indice >=0 && indice < consultas.length && !consultas[indice].removido){
+                    consultas[indice].removido = true;
+                    console.log("Consulta removida com sucesso.");
                 }
                 opcao = undefined;
-                consulta = undefined
+                consulta = undefined;
             }
             break;
         case 5:
